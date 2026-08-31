@@ -1,0 +1,408 @@
+/* ---------------------------------------------------------------------
+   Sistema visual "Mayor": inspirado en un libro contable real.
+   - Tipografía serif (Source Serif 4) para encabezados: le da carácter de
+     documento oficial en lugar de dashboard SaaS genérico.
+   - Monoespaciada (IBM Plex Mono) SOLO para cifras y códigos de cuenta:
+     alinea columnas de dinero como en un libro mayor real (tabular figures).
+   - Sans del sistema para texto de interfaz (etiquetas, botones, párrafos).
+   - Acento verde tinta (evoca "estar en positivo") y rojo ladrillo para
+     errores/desbalances. Bordes finos en vez de sombras — se prioriza la
+     jerarquía tipográfica sobre la decoración.
+   --------------------------------------------------------------------- */
+
+:root {
+  --ink: #14201c;
+  --ink-soft: #3d4a45;
+  --paper: #eef1ee;
+  --surface: #ffffff;
+  --border: #d7ddd7;
+  --border-strong: #b7c0b7;
+  --accent: #1f6f4a;
+  --accent-soft: #e3efe8;
+  --negative: #a6392f;
+  --negative-soft: #fbebe9;
+
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-serif: "Source Serif 4", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-serif), var(--font-mono);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+a {
+  color: var(--accent);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: var(--ink);
+  border-bottom: 3px solid var(--accent);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid var(--accent);
+  border-radius: 3px;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--accent-soft);
+  font-size: 0.95rem;
+}
+
+.brand-name {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: #f4f6f4;
+  letter-spacing: 0.01em;
+}
+
+.topnav {
+  display: flex;
+  gap: 1.75rem;
+}
+
+.topnav a {
+  color: #cfd8d2;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.topnav a:hover {
+  color: #ffffff;
+}
+
+/* ---------- Layout ---------- */
+
+.main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
+}
+
+.stack-lg > * + * {
+  margin-top: 1.5rem;
+}
+
+.page-header {
+  margin-bottom: 1.75rem;
+}
+
+.page-lead {
+  color: var(--ink-soft);
+  margin-top: 0.4rem;
+  max-width: 62ch;
+}
+
+/* ---------- Panels ---------- */
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--ink);
+  border-radius: 2px;
+  padding: 1.5rem 1.75rem;
+}
+
+.panel--empty {
+  border-top-color: var(--border-strong);
+  color: var(--ink-soft);
+}
+
+/* ---------- Forms ---------- */
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.field--grow {
+  flex: 1;
+  min-width: 200px;
+}
+
+.field--inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.field--inline label {
+  margin: 0;
+}
+
+label {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+input,
+select {
+  padding: 0.5rem 0.65rem;
+  font-size: 0.9rem;
+  border-radius: 3px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+input.mono,
+td.mono {
+  font-family: var(--font-mono);
+}
+
+.link-muted {
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.9rem;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+.btn--primary {
+  background: var(--ink);
+  color: #fff;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--accent);
+}
+
+.btn--secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--border-strong);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  border-color: var(--ink);
+}
+
+.btn:disabled {
+  background: #c9cfc9;
+  color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+/* ---------- Tables ---------- */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  font-size: 0.75rem;
+  text-transform: none;
+  color: var(--ink-soft);
+  font-weight: 600;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 2px solid var(--ink);
+}
+
+.table td {
+  padding: 0.55rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.table tbody tr:hover {
+  background: var(--paper);
+}
+
+.empty-hint {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+/* ---------- Badges ---------- */
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.badge--debito {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.badge--credito {
+  background: #eef1f6;
+  color: #2b4a75;
+  border-color: #2b4a75;
+}
+
+.badge--borrador {
+  background: #f2f2ee;
+  color: var(--ink-soft);
+  border-color: var(--border-strong);
+}
+
+.badge--contabilizado,
+.badge--reversion {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.badge--reversado {
+  background: var(--negative-soft);
+  color: var(--negative);
+  border-color: var(--negative);
+}
+
+/* ---------- Banners / feedback ---------- */
+
+.banner {
+  padding: 0.75rem 1rem;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  border-left: 3px solid;
+}
+
+.banner--error {
+  background: var(--negative-soft);
+  color: var(--negative);
+  border-left-color: var(--negative);
+}
+
+.banner--ok {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+/* ---------- Balance readout (comprobantes) ---------- */
+
+.balance {
+  display: flex;
+  gap: 2rem;
+  align-items: baseline;
+  margin: 1.25rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+.balance dt {
+  color: var(--ink-soft);
+  display: inline;
+}
+
+.balance dd {
+  display: inline;
+  margin: 0 0 0 0.4rem;
+  font-weight: 600;
+}
+
+.balance .diff-ok dd {
+  color: var(--accent);
+}
+
+.balance .diff-bad dd {
+  color: var(--negative);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 640px) {
+  .topbar {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+  .main {
+    padding: 1.5rem 1.25rem 3rem;
+  }
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
