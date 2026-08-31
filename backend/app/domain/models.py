@@ -115,7 +115,12 @@ class PeriodoContable(Base):
     anio: Mapped[int]
     mes: Mapped[int]
     estado: Mapped[EstadoPeriodo] = mapped_column(
-        Enum(EstadoPeriodo, name="estado_periodo_enum"), default=EstadoPeriodo.ABIERTO
+        Enum(
+            EstadoPeriodo,
+            name="estado_periodo_enum",
+            values_callable=lambda enum_cls: [e.value for e in enum_cls],
+            ),
+            default=EstadoPeriodo.ABIERTO,
     )
     cerrado_en: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
@@ -159,7 +164,12 @@ class Comprobante(Base):
     periodo_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("periodos_contables.id"))
     descripcion: Mapped[str] = mapped_column(Text)
     estado: Mapped[EstadoComprobante] = mapped_column(
-        Enum(EstadoComprobante, name="estado_comprobante_enum"), default=EstadoComprobante.BORRADOR
+        Enum(
+            EstadoComprobante,
+            name="estado_comprobante_enum",
+            values_callable=lambda enum_cls: [e.value for e in enum_cls],
+        ),
+        default=EstadoComprobante.BORRADOR,
     )
 
     comprobante_original_id: Mapped[uuid.UUID | None] = mapped_column(

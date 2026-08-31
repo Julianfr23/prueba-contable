@@ -85,17 +85,30 @@ def validar_comprobante_para_contabilizar(
 
 def validar_nit_digito_verificacion(nit: str, dv_informado: int) -> bool:
     """
-    Implementación del algoritmo oficial de la DIAN (Colombia) para el
-    dígito de verificación del NIT, usado para validar el NIT del
-    informante antes de incluirlo en el archivo de exógena.
+    Valida el dígito de verificación de un NIT colombiano.
     """
-    pesos = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71]
+    pesos = [71, 67, 59, 53, 47, 43, 41, 37, 29]
+
     nit_limpio = nit.strip().replace("-", "").replace(".", "")
+
     if not nit_limpio.isdigit():
         raise ReglaContableError("El NIT solo debe contener dígitos")
 
-    digitos = [int(d) for d in reversed(nit_limpio)]
-    total = sum(d * pesos[i] for i, d in enumerate(digitos) if i < len(pesos))
+    if len(nit_limpio) != len(pesos):
+        raise ReglaContableError(
+            "El NIT debe tener 9 dígitos antes del dígito de verificación"
+        )
+
+    total = sum(
+        int(digito) * peso
+        for digito, peso in zip(nit_limpio, pesos)
+    )
+
     residuo = total % 11
-    dv_calculado = residuo if residuo in (0, 1) else 11 - residuo
+
+    if residuo in (0, 1):
+        dv_calculado = residuo
+    else:
+        dv_calculado = 11 - residuo
+
     return dv_calculado == dv_informado

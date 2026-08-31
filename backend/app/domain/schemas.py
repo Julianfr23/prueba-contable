@@ -40,6 +40,22 @@ class CuentaOut(BaseModel):
     class Config:
         from_attributes = True
 
+# ---------- Tercero ----------
+class TerceroCreate(BaseModel):
+    tipo_doc: str = "CC"
+    num_doc: str
+    nombre: str
+
+
+class TerceroOut(BaseModel):
+    id: uuid.UUID
+    tipo_doc: str
+    num_doc: str
+    nombre: str
+
+    class Config:
+        from_attributes = True
+
 
 # ---------- Periodo ----------
 class PeriodoOut(BaseModel):

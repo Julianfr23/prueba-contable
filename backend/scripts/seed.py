@@ -28,7 +28,7 @@ from app.infra.db import AsyncSessionLocal
 
 async def seed() -> None:
     async with AsyncSessionLocal() as session:
-        empresa = Empresa(nit="900123456-8", razon_social="Empresa Demo SAS")
+        empresa = Empresa(nit="900123456-7", razon_social="Empresa Demo SAS")
         session.add(empresa)
         await session.flush()
 
@@ -68,9 +68,26 @@ async def seed() -> None:
         session.add_all(terceros)
 
         anio_actual = datetime.now(timezone.utc).year
-        session.add(UvtValor(anio=anio_actual, valor=Decimal("49799"), fuente="seed"))
-        session.add(UvtValor(anio=anio_actual - 1, valor=Decimal("47065"), fuente="seed"))
 
+        uvt_actual = await session.get(UvtValor, anio_actual)
+        if uvt_actual is None:
+            session.add(
+                UvtValor(
+                    anio=anio_actual,
+                    valor=Decimal("52234"),
+                    fuente="seed",
+                )   
+            )
+
+        uvt_anterior = await session.get(UvtValor, anio_actual - 1)
+        if uvt_anterior is None:
+            session.add(
+                UvtValor(
+                    anio=anio_actual - 1,
+                    valor=Decimal("47065"),
+                    fuente="seed",
+                )
+            )
         await session.commit()
 
         print("Datos semilla creados:")
